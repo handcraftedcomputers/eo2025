@@ -5,7 +5,7 @@ My [pyinfra talk](https://2025.everythingopen.au/schedule/presentation/80/) and 
 [Everything Open 2025](https://2025.everythingopen.au/).  I'll link the video once it's
 been uploaded to EweToob (this is waiting on external parties).
 
-This file is definitely Work In Progress.
+This file is definitely a Work In Progress.
 
 ##  Licence
 
@@ -41,8 +41,8 @@ and sudo access).
 
     `(venv)$ pyinfra inventory.py update_lets_encrypt.py`
 
-    Without the "-y" flag, 3.x pyinfra will prompt before applying operations.
-Hit <return> if you dare, or power cycle the building to abort.
+    Without the "-y" flag, 3.x pyinfra will prompt before applying operations.  Hit
+&lt;return&gt; if you dare, or power cycle the building to abort.
 
 ##  Bugs
 
@@ -84,7 +84,8 @@ domain names here instead of using a list.
    This was more around a "programming in system teams" scenario.  While I have
 no issues with list comprehensions, I am aware that there are those who do, so
 if this was a team shared script I'd rewrite it to use a less idiomatic but
-"plainer speakin'" code style.  Know, and code for, your audience.
+"plainer speakin'" code style (i.e. build the paths to each file separately).
+Know, and code, for your audience.
 
 -  One feature I really wanted to point out about pyinfra is that it's a library with
 a CLI wrapper.  While we traditionally run the inventory/deploy scripts from the CLI,
@@ -98,25 +99,26 @@ dependant on those certificates.  This deploy is a lot more "implicit driven" -
 it updates certificates only if they already exist, and it's not an error if they
 don't.  I'm actually comfortable with my lifestyle choice(s).
 
--  My archive technique consists of an "old\_certs" directory under the particular
-certificates directory, and old certificates are moved into there after being
+-  My archive technique consists of an "old\_certs" directory under the certificates
+directory in question, and old certificates are moved into there after being
 renamed to their sha1sum hash (to ensure they don't clobber over previous versions
 of themselves).  Actual maintenance of the number of certs hasn't been implemented
-(yet).
+(yet), but will probably involve scanning the cert itself for name and age.
 
 -  The method `concat_files` returns a Python StringIO (technically, a BytesIO)
-object, which is an in memory file.  No temporary files to delete after a
-(successful or otherwise) run.  We use this method to construct a certificate
-that combines the key and full chain, which is what most web and mail servers
-require.
+object which is an in-memory "file", foregoing the need to delete the file
+after the run (successful or otherwise).  We use this method to construct a
+combined certificate that has both the key and full chain, which is what most
+web and mail servers require.
 
--  `reload_svc` is also written more implicitly; we ask for a service to be
-"reloaded", but don't know what type of service manager it runs under (not listed
-here, but I also run daemontools elsewhere, from which runit was derived), so
-this operation figures it out for us using facts.  I've had to special case
-lighttpd's reload as it uses SIGUSR1 to perform a graceful restart, which runit's
-reload doesn't use.  Not sure how I feel about the special casing at this stage
-(normally not a fan, but post conference - meh).
+-  `reload_svc` is also written in an implicit fashion; we ask for a service to
+reload its configuration, but don't know what type of service manager it runs
+under (I use daemontools (not used here), runit, systemd, in that order).  This
+operation figures out what's required by the use of facts.  I've had to special case
+lighttpd's reload as it uses SIGUSR1, not SIGHUP to perform a graceful restart,
+which runit's reload isn't able to accommodate.  Not sure how I feel about the
+special casing at this stage (normally not a fan, and my spidey sense is
+slightly tingling, but post conference - meh).
 
 Daryl Tester, 2025-01-24.
 eo2025@handcraftedcomputers.com.au
