@@ -2,8 +2,8 @@
 ## Everything Open 2025
 
 My [pyinfra talk](https://2025.everythingopen.au/schedule/presentation/80/) and notes from
-[Everything Open 2025](https://2025.everythingopen.au/).  I'll link the video once it's
-been uploaded to EweToob (this is waiting on external parties).
+[Everything Open 2025](https://2025.everythingopen.au/).  And
+[EweToob](https://www.youtube.com/watch?v=SwzrARM3pus) of the talk.
 
 This file is definitely a Work In Progress.
 
